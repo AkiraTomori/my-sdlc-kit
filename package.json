@@ -1,0 +1,13 @@
+{
+  "name": "sdlc-kit",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Reusable SDLC workflow plugin for Claude Code",
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

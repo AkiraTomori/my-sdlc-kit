@@ -1,0 +1,21 @@
+{
+  "extraKnownMarketplaces": {
+    "sdlc-kit": {
+      "source": {
+        "source": "directory",
+        "path": "./tools/sdlc-kit"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "sdlc@sdlc-kit": true
+  },
+  "permissions": {
+    "deny": [
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Read(./.env)",
+      "Read(./**/.env)"
+    ]
+  }
+}

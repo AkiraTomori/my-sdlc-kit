@@ -1,0 +1,17 @@
+{
+  "name": "sdlc-kit",
+  "description": "Reusable SDLC workflow plugin for Claude Code, meant to be vendored as a git submodule",
+  "owner": {
+    "name": "AkiraTomori"
+  },
+  "plugins": [
+    {
+      "name": "sdlc",
+      "source": "./plugins/sdlc",
+      "description": "Scoped SDLC skills, four specialist agents and a PreToolUse shell guard",
+      "author": {
+        "name": "AkiraTomori"
+      }
+    }
+  ]
+}
