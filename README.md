@@ -9,12 +9,13 @@ Plugin không chứa nghiệp vụ, stack hay deadline của dự án nào. Ph�
 ```
 .claude-plugin/marketplace.json   gốc repo là một marketplace (tên: sdlc-kit)
 plugins/sdlc/
-  skills/        11 skill: spec design implement verify review pr
+  skills/        14 skill: spec design implement verify review pr
                  + database frontend-ui-design to-tickets tdd sign-off
+                 + grill diagnose handoff
   agents/        4 agent: repo_explorer implementation_worker test_engineer code_reviewer
   hooks/         guard-actions.mjs + hooks.json (PreToolUse cho Bash)
 templates/       AGENTS.md, CLAUDE.md, settings.json để chép vào dự án
-.agents/skills/  bản sao nguyên văn 11 skill + README liệt kê, để xem nhanh workflow có gì
+.agents/skills/  bản sao nguyên văn 14 skill + README liệt kê, để xem nhanh workflow có gì
 tests/           test cho guard và test giữ bản sao không lệch (không đóng gói vào plugin)
 ```
 
@@ -24,6 +25,7 @@ Quy trình gói gọn trong một câu: **chọn đúng một skill cho việc �
 
 | Khi nào | Lệnh |
 |---|---|
+| Ý tưởng còn mơ hồ, muốn bị hỏi tới cùng trước khi spec | `/sdlc:grill <ý tưởng>` |
 | Làm rõ hành vi, phạm vi, tiêu chí chấp nhận | `/sdlc:spec <phạm vi>` |
 | Thiết kế luồng, giao diện module, hành vi khi lỗi | `/sdlc:design <slice>` |
 | Dữ liệu, ràng buộc, migration | `/sdlc:database <phạm vi>` |
@@ -34,8 +36,40 @@ Quy trình gói gọn trong một câu: **chọn đúng một skill cho việc �
 | Mở PR, không merge | `/sdlc:pr <phạm vi>` |
 | Giao diện, a11y, responsive | `/sdlc:frontend-ui-design <màn hình>` |
 | Quyết định ảnh hưởng phạm vi, an toàn, chi phí | `/sdlc:sign-off <quyết định>` |
+| Bug khó, test chập chờn, chạy chậm | `/sdlc:diagnose <triệu chứng>` |
+| Hết phiên / đầy context, chuyển việc sang phiên mới | `/sdlc:handoff <việc của phiên sau>` |
 
-`implement`, `pr`, `sign-off`, `to-tickets` chỉ chạy khi bạn gọi tay.
+`implement`, `pr`, `sign-off`, `to-tickets`, `grill`, `handoff` chỉ chạy khi bạn gọi tay. `diagnose` có thể tự kích hoạt khi bạn báo lỗi, nhưng chỉ được sửa mã khi bạn cho phép.
+
+## Workflow trông như thế nào
+
+```mermaid
+flowchart LR
+    idea([Ý tưởng / yêu cầu]) --> grill["grill<br/>hỏi tới khi hết câu"]
+    idea -. đã rõ .-> spec
+    grill -->|owner xác nhận| spec["spec<br/>phạm vi + tiêu chí"]
+    spec --> design["design<br/>+ database / frontend-ui-design"]
+    design --> tickets["to-tickets"]
+    tickets --> impl["implement<br/>+ tdd"]
+    spec -. slice nhỏ .-> impl
+    impl --> verify["verify"]
+    verify --> review["review"]
+    review --> pr(["pr<br/>không merge"])
+    verify -->|hỏng / chập chờn| diag["diagnose<br/>loop đỏ → giả thuyết → sửa"]
+    bug([Báo lỗi]) --> diag
+    diag -->|được phép sửa| impl
+    signoff{{"sign-off<br/>quyết định lớn"}} -.-> spec
+    signoff -.-> design
+    handoff[/"handoff<br/>sang phiên mới"/] -.-> impl
+```
+
+Đọc sơ đồ:
+- **Mũi tên liền** là luồng thường gặp, **nét đứt** là đường tắt hoặc bước chỉ dùng khi cần. Không bước nào tự chạy bước kế tiếp: mỗi skill chỉ **đề xuất** một lệnh, bạn quyết định có gọi hay không.
+- **`grill` đứng trước `spec`.** Dùng khi ý tưởng còn mơ hồ: agent hỏi theo vòng, mỗi câu kèm đáp án đề xuất, tự tra cứu dữ kiện trong repo, chỉ hỏi bạn những gì là *quyết định*. Kết thúc khi hết câu và bạn xác nhận bản tóm tắt, rồi mới sang `spec`.
+- **`diagnose` là nhánh rẽ** từ `verify` hoặc từ một báo lỗi. Bắt buộc có một lệnh tái hiện lỗi (đỏ đúng triệu chứng, nhanh, ổn định) trước khi đoán nguyên nhân. Bản sửa đi qua `implement` + `tdd`, test hồi quy chính là lệnh tái hiện đã thu gọn.
+- **`handoff` dùng ở bất kỳ điểm nào** khi phiên sắp hết context: ghi trạng thái, quyết định, đường dẫn và đúng một lệnh `/sdlc:*` để phiên mới chạy đầu tiên.
+
+Ví dụ một vòng: `/sdlc:grill đăng nhập bằng email` → xác nhận tóm tắt → `/sdlc:spec đăng nhập bằng email` → `/sdlc:implement slice gửi magic link` → `/sdlc:verify` báo test hết hạn link chập chờn → `/sdlc:diagnose link hết hạn sớm` → được phép sửa → `/sdlc:verify` → `/sdlc:pr`.
 
 ## Gắn vào một dự án
 
@@ -119,4 +153,4 @@ Quy tắc:
 - Skill và agent phải **tổng quát**: không đưa tên dự án, ID nghiệp vụ, đường dẫn, deadline hay stack cụ thể vào `plugins/sdlc/`. Những thứ đó thuộc `AGENTS.md` của dự án.
 - Đổi hành vi plugin thì tăng `version` trong `plugins/sdlc/.claude-plugin/plugin.json` và gắn tag.
 - Sửa luật trong `guard-actions.mjs` thì thêm ca vào `tests/guard-actions.test.mjs` cho cả hai hướng (cho qua và hỏi/chặn).
-- `plugins/sdlc/skills/tdd/` dùng giấy phép MIT của Matt Pocock (`LICENSE.mattpocock`).
+- `plugins/sdlc/skills/{tdd,grill,diagnose,handoff}/` phỏng theo [mattpocock/skills](https://github.com/mattpocock/skills), giấy phép MIT (`LICENSE.mattpocock` trong từng thư mục).

@@ -1,6 +1,6 @@
 {
   "name": "sdlc-kit",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "description": "Reusable SDLC workflow plugin for Claude Code",

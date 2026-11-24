@@ -1,7 +1,7 @@
 {
   "name": "sdlc",
-  "version": "1.0.0",
-  "description": "Reusable SDLC workflow for Claude Code: spec, design, implement, verify, review and PR skills, four specialist agents and a loosened shell guard.",
+  "version": "1.1.0",
+  "description": "Reusable SDLC workflow for Claude Code: grill, spec, design, implement, verify, diagnose, review, PR and handoff skills, four specialist agents and a loosened shell guard.",
   "author": {
     "name": "AkiraTomori"
   }

@@ -25,6 +25,7 @@ Skill nằm trong plugin `sdlc` (submodule `<đường dẫn>`). Chưa cài plug
 
 | Khi nào | Skill | Đầu ra trong repo này |
 |---|---|---|
+| Ý tưởng còn mơ hồ, cần hỏi kỹ trước | `/sdlc:grill <ý tưởng>` | Tóm tắt quyết định đã chốt (ghi vào spec khi owner yêu cầu) |
 | Làm rõ hành vi, phạm vi, tiêu chí chấp nhận | `/sdlc:spec <phạm vi>` | `<docs/spec/>` |
 | Slice có luồng, giao diện module hoặc cấu trúc mới | `/sdlc:design <slice>` | `<docs/design/>` |
 | Dữ liệu, ràng buộc, migration | `/sdlc:database <phạm vi>` | Mô hình dữ liệu + kế hoạch migrate |
@@ -35,8 +36,12 @@ Skill nằm trong plugin `sdlc` (submodule `<đường dẫn>`). Chưa cài plug
 | Xem lại thay đổi trước khi mở PR | `/sdlc:review <nhánh hoặc PR>` | Danh sách phát hiện theo mức độ |
 | Mở PR | `/sdlc:pr <phạm vi>` | PR nháp hoặc PR, không merge |
 | Quyết định ảnh hưởng phạm vi, an toàn, chi phí | `/sdlc:sign-off <quyết định>` | Ghi quyết định vào spec |
+| Bug khó, test chập chờn, chạy chậm | `/sdlc:diagnose <triệu chứng>` | Lệnh tái hiện + nguyên nhân; sửa khi owner cho phép |
+| Chuyển việc sang phiên mới | `/sdlc:handoff <việc phiên sau>` | Tài liệu bàn giao ở thư mục tạm |
 
 **Luồng gợi ý:**
+- Ý tưởng mơ hồ: `grill` → `spec` → …
+- Sửa bug: `diagnose` → `implement` (+`tdd`) → `verify` → `pr`.
 - Slice lớn: `spec` → `design` (+`database`) → `implement` (+`tdd`) → `verify` → `review` → `pr`.
 - Sửa nhỏ: `implement` → `verify` → `pr`.
 - Không bắt buộc đi đủ chuỗi. Chọn skill phù hợp với việc đang làm.
