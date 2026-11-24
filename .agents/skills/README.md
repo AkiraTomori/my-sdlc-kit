@@ -6,6 +6,7 @@ Mỗi skill là một phương pháp làm việc, không gắn với sản phẩ
 
 | Nhóm | Skill | Dùng để | Gọi |
 | --- | --- | --- | --- |
+| Tuỳ chọn | [grill](grill/SKILL.md) | Hỏi theo cây quyết định tới khi không còn gì bị ngầm định, trước khi spec | **Chỉ gọi tay** |
 | Lõi | [spec](spec/SKILL.md) | Làm rõ mục đích, phạm vi, tiêu chí chấp nhận, quyết định còn mở | Tự động hoặc tay |
 | Lõi | [design](design/SKILL.md) | Thiết kế luồng người dùng, giao diện module, hành vi dữ liệu và khi lỗi | Tự động hoặc tay |
 | Lõi | [implement](implement/SKILL.md) | Làm một slice đã được duyệt, đi dọc từ hành vi tới các tầng cần thiết | **Chỉ gọi tay** |
@@ -17,6 +18,8 @@ Mỗi skill là một phương pháp làm việc, không gắn với sản phẩ
 | Tuỳ chọn | [to-tickets](to-tickets/SKILL.md) | Cắt việc đã chốt thành ticket nhỏ, demo được | **Chỉ gọi tay** |
 | Tuỳ chọn | [tdd](tdd/SKILL.md) | Vòng Red → Green → Refactor tại ranh giới hành vi hữu ích | Tự động hoặc tay |
 | Tuỳ chọn | [sign-off](sign-off/SKILL.md) | Chuẩn bị một quyết định của owner khi lựa chọn ảnh hưởng lớn | **Chỉ gọi tay** |
+| Tuỳ chọn | [diagnose](diagnose/SKILL.md) | Debug bug khó: dựng loop tái hiện đỏ trước, rồi giả thuyết, đo, sửa khi được phép | Tự động hoặc tay |
+| Tuỳ chọn | [handoff](handoff/SKILL.md) | Gói phiên hiện tại thành tài liệu bàn giao cho phiên mới | **Chỉ gọi tay** |
 
 Lệnh sau khi cài plugin: `/sdlc:<skill> <phạm vi>`. Ví dụ `/sdlc:spec đăng nhập bằng email`.
 

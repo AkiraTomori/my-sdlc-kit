@@ -6,6 +6,7 @@ A project-agnostic plugin of scoped skills, four optional agents and a shell gua
 
 | Command | Purpose |
 | --- | --- |
+| /sdlc:grill <idea> | Optional interview until every decision is settled (manual) |
 | /sdlc:spec <scope> | Confirm observable outcome and acceptance examples |
 | /sdlc:design <scope> | Design interfaces, semantics and failure behavior |
 | /sdlc:implement <approved-slice> | Deliver one authorized change |
@@ -17,13 +18,15 @@ A project-agnostic plugin of scoped skills, four optional agents and a shell gua
 | /sdlc:to-tickets <scope> | Optional ticket decomposition |
 | /sdlc:tdd <scope> | Optional Red–Green–Refactor loop |
 | /sdlc:sign-off <decision> | Optional human decision support |
+| /sdlc:diagnose <symptom> | Optional loop-first bug diagnosis |
+| /sdlc:handoff <next-focus> | Optional session handoff document (manual) |
 
 Use any relevant skill directly. No mandatory orchestrator or automatic progression. Planning does not authorize implementation; PR creation does not authorize merge.
 
 ## Package structure
 
 - `.claude-plugin/plugin.json`: Claude Code metadata.
-- `skills/<name>/SKILL.md`: eleven portable skills (`implement`, `pr`, `sign-off`, `to-tickets` are manual-only).
+- `skills/<name>/SKILL.md`: fourteen portable skills (`implement`, `pr`, `sign-off`, `to-tickets`, `grill`, `handoff` are manual-only).
 - `agents/*.md`: four optional agents — `repo_explorer` (read-only), `implementation_worker` (scoped writes), `test_engineer` (approved tests), `code_reviewer` (read-only). Manual choices, never automatic routes.
 - `hooks/hooks.json` + `hooks/guard-actions.mjs`: a `PreToolUse` guard for Bash, active whenever the plugin is enabled. Needs Node.js. It is a best-effort backstop, not a security boundary.
 
